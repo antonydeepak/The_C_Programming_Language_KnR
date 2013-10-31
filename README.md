@@ -1,4 +1,1 @@
-The_C_Programming_Language_KnR
-==============================
-
-Solutions to problems in "The C programming language" by KnR
+Solution Book to "The C Programming Language by Kernigan and Ritchie"
