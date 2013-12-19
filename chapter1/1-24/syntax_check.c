@@ -3,7 +3,6 @@
 #define QUOTED_SINGLE 0
 #define QUOTED_DOUBLE 1
 #define COMMENTED 2
-#define ESCAPED 3
 #define NORMAL 4
 
 int main(){
@@ -12,10 +11,7 @@ int main(){
 	int program_state = NORMAL;
 
 	while((c = getchar()) != EOF){
-		if(c == 92){ /* \ */
-			program_state = ESCAPED;
-			continue;
-		}
+		
 		if(program_state == NORMAL){
 			if(c == '[' || c == '{' || c == '('){
 				paranthesis_count++;
@@ -34,11 +30,25 @@ int main(){
 			}
 		}
 		else if(program_state == QUOTED_SINGLE){
+			if(c == 92){ /* \ */
+				int nextc = getchar();
+				if(nextc == EOF)
+					break;
+				else
+					continue;
+			}
 			if( c== 39){
 				program_state = NORMAL;
 			}
 		}
 		else if(program_state == QUOTED_DOUBLE){
+			if(c == 92){ /* \ */
+				int nextc = getchar();
+				if(nextc == EOF)
+					break;
+				else
+					continue;
+			}
 			if( c== '"'){
 				program_state = NORMAL;
 			}
@@ -47,9 +57,7 @@ int main(){
 			if(prevc == '*' && c == '/')
 				program_state == NORMAL;
 		}
-		else if(program_state == ESCAPED){
-			program_state == NORMAL;
-		}
+		
 		prevc = c;
 	}
 
@@ -64,9 +72,6 @@ int main(){
 	}
 	else if(program_state == COMMENTED){
 		printf("open comment");
-	}
-	else if(program_state == ESCAPED){
-		printf("Improper escape");
 	}
 	else{
 		printf("No syntax errors");
